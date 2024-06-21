@@ -1,7 +1,10 @@
 # Contributing
 
 
-## Code organization
+## Design principles
+
+
+## Code conventions
 
 The full code of the library is available online:
 * https://github.com/agda/agda-categories is the code repository, where the GitHub interface allows you to easily search the codebase and inspect its history;
@@ -12,7 +15,10 @@ In the remainder of this section we go through the ideas organizing the structur
 Since the Agda module system forces file paths to match modules names, we'll only talk about the module names.
 
 
-### Base structure
+### Structure
+
+
+#### Basics
 
 **All code that shouldn't (eventually) be in the Agda standard library is under `Categories`.**
 
@@ -23,12 +29,12 @@ Many of the usual definitions are gathered in submodules: `Categories.Category.C
 There are also namespaces for other concepts: `Categories.Bicategory`, `Categories.Enriched`, `Categories.Pseudofunctor`, etc.
 
 
-### Properties
+#### Properties
 
 **If `P` is a property following from the definition of `X` then its path must be `X.Properties.Y`.**
 
 
-### Instances
+#### Instances
 
 **If `Y` is an _instance_ of `X` then its path must be `X.Instance.Y`.**
 
@@ -42,7 +48,7 @@ Examples:
 * the Category of Setoids.
 
 
-### Constructions
+#### Constructions
 
 **If `Y` is a construction over `X` then its path must be `X.Construction.Y`.**
 
@@ -51,7 +57,7 @@ By _construction_ we mean "something built out of something": as a rule of thumb
 As opposed to instances, constructions are parametrized over some input in a non-trivial way.
 
 
-### Core
+#### Core
 
 It is sometimes necessary to isolate the main definitions of a module to avoid various kinds of import loops.
 
@@ -75,7 +81,7 @@ Examples:
 * [see all on GitHub](https://github.com/search?type=code&q=repo%3Aagda%2Fagda-categories+path%3Asrc%2F**%2FCore.agda)
 
 
-## Naming Conventions
+### Naming
 
 - Named modules are often used when multiple structures are in concurrent use; for example,
   if the 'components' of two categories (say A and B) are used in the same context, then
@@ -84,6 +90,12 @@ Examples:
 - Components of larger structures use long English names instead of the more usual
   Categorical 1-Greek-letter short-hands.  So unitor<sup>l</sup> rather than
   &lambda; and associator rather than &alpha;.
+
+
+### Style
+
+
+## Performance guidelines
 
 
 # References
