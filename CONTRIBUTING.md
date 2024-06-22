@@ -133,6 +133,8 @@ Examples:
 
 ## Performance guidelines
 
+> Reasonably often, it's not your code that is the biggest culprit, it is the library itself. There are known issues in the Monoidal and Bicategory hierarchy that have not yet been fixed. PRs for these would be most welcome. Ref: [^GithubWikiSpeed].
+
 > Don't inline long equational proofs in record definitions. Ref: [^GithubComment906570461], [^GitHubComment905410931], [^ZulipTopicEqProofs].
 
 > Don't use let-in because that's just syntactic sugar, and it will get expanded out / duplicated everywhere. It might be ok for open and giving short names meant for humans. Ref: [^GithubComment909599749].
