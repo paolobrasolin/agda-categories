@@ -120,67 +120,67 @@ Examples:
 
 ### Naming
 
-> Named modules are often used when multiple structures are in concurrent use; for example, if the 'components' of two categories (say A and B) are used in the same context, then (private) modules A and B are defined for easier access. Ref: [^readme].
+> Named modules are often used when multiple structures are in concurrent use; for example, if the 'components' of two categories (say A and B) are used in the same context, then (private) modules A and B are defined for easier access. Ref: [^GithubReadme].
 
-> Components of larger structures use long English names instead of the more usual Categorical 1-Greek-letter short-hands. So unitor<sup>l</sup> rather than &lambda; and associator rather than &alpha;. Ref: [^readme].
+> Components of larger structures use long English names instead of the more usual Categorical 1-Greek-letter short-hands. So unitor<sup>l</sup> rather than &lambda; and associator rather than &alpha;. Ref: [^GithubReadme].
 
 
 ### Style
 
-> Be very sparing with open public. This can be convenient at times, but can also really pollute the name space and make interoperability complicated. Ref: [^GHIssueComment909599749].
+> Be very sparing with open public. This can be convenient at times, but can also really pollute the name space and make interoperability complicated. Ref: [^GithubComment909599749].
 
-> Avoid putting too many utilities directly in a record. Instead, go for minimal records and a utility module that adds them all. Then users can choose to bring them in at the use site. Ref: [^GHIssueComment909599749].
+> Avoid putting too many utilities directly in a record. Instead, go for minimal records and a utility module that adds them all. Then users can choose to bring them in at the use site. Ref: [^GithubComment909599749].
 
 ## Performance guidelines
 
-> Don't inline long equational proofs in record definitions. Ref: [^GitHubComment906570461], [^GitHubComment905410931], [^ZulipTopicEqProofs].
+> Don't inline long equational proofs in record definitions. Ref: [^GithubComment906570461], [^GitHubComment905410931], [^ZulipTopicEqProofs].
 
-> Don't use let-in because that's just syntactic sugar, and it will get expanded out / duplicated everywhere. It might be ok for open and giving short names meant for humans. Ref: [^GHIssueComment909599749].
+> Don't use let-in because that's just syntactic sugar, and it will get expanded out / duplicated everywhere. It might be ok for open and giving short names meant for humans. Ref: [^GithubComment909599749].
 
-> Don't put module versions of a record in records all over the place. These make the end results a lot bigger, and make typechecking time go up quite a bit too. Note: the paper explicitly advocates for this pattern! It is indeed super-convenient, but also very bad for efficiency. Ref: [^GHIssueComment909599749].
+> Don't put module versions of a record in records all over the place. These make the end results a lot bigger, and make typechecking time go up quite a bit too. Note: the paper explicitly advocates for this pattern! It is indeed super-convenient, but also very bad for efficiency. Ref: [^GithubComment909599749].
 
-> Do use using qualifiers, both at the top and for local modules. These end up in the signature of the modules, and can have a knock-on effect on size. Ref: [^GHIssueComment909599749].
+> Do use using qualifiers, both at the top and for local modules. These end up in the signature of the modules, and can have a knock-on effect on size. Ref: [^GithubComment909599749].
 
 > **Asking agda to work too hard:** using lots of _ in equational proofs.
 > Solution: Don't be so lazy, expand out those _.
-> Ref: [^GitHubWikiSpeed].
+> Ref: [^GithubWikiSpeed].
 
 > **Hard implicits:** when you have a term that has a f  ∘ g (or equivalent) that computes away, the "middle type" might no longer be visible at all in the fully evaluated goal.
 > Solution: Take a look at your goals with all implicits shown and normalize fully. If your implicits are filled with expanded records instead of the name of the thing you had expected Agda to provide, it's because Agda chose to reconstruct it. You should provide those explicitly, to turn the problem into one of checking instead of inference.
-> Ref: [^GitHubWikiSpeed].
+> Ref: [^GithubWikiSpeed].
 
 > **Large files:** it sure feels like typechecking isn't linear in the size of your file. Conjecture: I think Agda 'peeks' too much when it actually knows the full definition, and doesn't do it as much cross-modules.
 > Solution: Split things up!
-> Ref: [^GitHubWikiSpeed].
+> Ref: [^GithubWikiSpeed].
 
 > **Large interfaces:** remember that it's not just the fields of a record that are on its interfaces, but all conservative extensions (aka definitions) are too.
 > Solution: Split the helper routines into its own module (and its own file). Some downstream code will use these a lot, some very little. That saves a lot of time for that latter downstream code. If you have to import some huge module, then use using, this cuts things down significantly.
-> Ref: [^GitHubWikiSpeed].
+> Ref: [^GithubWikiSpeed].
 
 > **Convenience modules:** the lure of just being able to use . is so strong.
 > Solution: These feel like they should be no cost, but that's not true. Agda copies everything (and does some re-checking). This bloats the size of interfaces hugely. agda-categories uses a lot of these "convenience" modules (we didn't realize how expensive they were). It looks like if you make the convenience modules private then it's not as bad, as they don't appear on the interface.
-> Ref: [^GitHubWikiSpeed].
+> Ref: [^GithubWikiSpeed].
 
 > **Inline proofs:** you know that something's a proof, but Agda doesn't. It's all just values. And Agda is awful at sharing, so it's splay those all over.
 > Solution: Use a lot of where clauses where you name your proofs. Or put them in private blocks above your record. It seems that defining some things via copatterns instead of an explicit record might help too.
-> Ref: [^GitHubWikiSpeed].
+> Ref: [^GithubWikiSpeed].
 
 > **Lack of sharing:** you know you've typed the same expression over and over, but Agda doesn't.
 > Solution: For long equational proofs, some sub-expressions might take .5 seconds to typecheck -- but they appear 25 times in your proof... Agda doesn't go hash-consing or anything like that. It's quite well-known to do the opposite (let bindings get splayed out, the horror!). Go ahead and give names (and types) to oft repeated intermediate expressions (via where not let, of course).
-> Ref: [^GitHubWikiSpeed].
+> Ref: [^GithubWikiSpeed].
 
 > It's also good to read [NAD's AIM 32](https://www.cse.chalmers.se/~nad/publications/danielsson-aim32-talk.txt) notes on efficiency and the [Performance Debugging](https://agda.readthedocs.io/en/v2.6.3/tools/performance.html) section of the manual.
 
 
 # References
 
-[^readme]: https://github.com/agda/agda-categories/blob/v0.2.0/README.md
+[^GithubReadme]: https://github.com/agda/agda-categories/blob/v0.2.0/README.md
 [^Hu20]: https://arxiv.org/pdf/2005.07059
 [^Gross14]: https://arxiv.org/pdf/1401.7694
 
-[^GitHubComment906570461]: https://github.com/agda/agda-categories/issues/308#issuecomment-906570461
-[^GitHubComment905410931]: https://github.com/agda/agda-categories/pull/304#issuecomment-905410931
+[^GithubComment906570461]: https://github.com/agda/agda-categories/issues/308#issuecomment-906570461
+[^GithubComment905410931]: https://github.com/agda/agda-categories/pull/304#issuecomment-905410931
 [^ZulipTopicEqProofs]: https://agda.zulipchat.com/#narrow/stream/238741-general/topic/*Very*.20long.20checking.20times.20for.20equational.20proofs
-[^GHIssueComment909599749]: https://github.com/agda/agda-categories/issues/308#issuecomment-909599749
-[^GitHubWikiSpeed]: https://github.com/agda/agda-categories/wiki/speed
+[^GithubComment909599749]: https://github.com/agda/agda-categories/issues/308#issuecomment-909599749
+[^GithubWikiSpeed]: https://github.com/agda/agda-categories/wiki/speed
 
