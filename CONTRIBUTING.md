@@ -120,22 +120,36 @@ Examples:
 
 ### Naming
 
-> Named modules are often used when multiple structures are in concurrent use; for example, if the 'components' of two categories (say A and B) are used in the same context, then (private) modules A and B are defined for easier access.
+> Named modules are often used when multiple structures are in concurrent use; for example, if the 'components' of two categories (say A and B) are used in the same context, then (private) modules A and B are defined for easier access. Ref: [^readme].
 
-> Components of larger structures use long English names instead of the more usual Categorical 1-Greek-letter short-hands. So unitor<sup>l</sup> rather than &lambda; and associator rather than &alpha;.
+> Components of larger structures use long English names instead of the more usual Categorical 1-Greek-letter short-hands. So unitor<sup>l</sup> rather than &lambda; and associator rather than &alpha;. Ref: [^readme].
 
 
 ### Style
 
+> Be very sparing with open public. This can be convenient at times, but can also really pollute the name space and make interoperability complicated. Ref: [^GHIssueComment909599749].
+
+> Avoid putting too many utilities directly in a record. Instead, go for minimal records and a utility module that adds them all. Then users can choose to bring them in at the use site. Ref: [^GHIssueComment909599749].
 
 ## Performance guidelines
 
+> Don't inline long equational proofs in record definitions. Ref: [^GitHubComment906570461], [^GitHubComment905410931], [^ZulipTopicEqProofs].
+
+> Don't use let-in because that's just syntactic sugar, and it will get expanded out / duplicated everywhere. It might be ok for open and giving short names meant for humans. Ref: [^GHIssueComment909599749].
+
+> Don't put module versions of a record in records all over the place. These make the end results a lot bigger, and make typechecking time go up quite a bit too. Note: the paper explicitly advocates for this pattern! It is indeed super-convenient, but also very bad for efficiency. Ref: [^GHIssueComment909599749].
+
+> Do use using qualifiers, both at the top and for local modules. These end up in the signature of the modules, and can have a knock-on effect on size. Ref: [^GHIssueComment909599749].
 
 # References
 
 [^readme]: https://github.com/agda/agda-categories/blob/v0.2.0/README.md
-[^Issue308]: https://github.com/agda/agda-categories/issues/308
 [^Wiki]: https://github.com/agda/agda-categories/wiki/speed
 [^Hu20]: https://arxiv.org/pdf/2005.07059
 [^Gross14]: https://arxiv.org/pdf/1401.7694
+
+[^GitHubComment906570461]: https://github.com/agda/agda-categories/issues/308#issuecomment-906570461
+[^GitHubComment905410931]: https://github.com/agda/agda-categories/pull/304#issuecomment-905410931
+[^ZulipTopicEqProofs]: https://agda.zulipchat.com/#narrow/stream/238741-general/topic/*Very*.20long.20checking.20times.20for.20equational.20proofs
+[^GHIssueComment909599749]: https://github.com/agda/agda-categories/issues/308#issuecomment-909599749
 
