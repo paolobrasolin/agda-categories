@@ -141,10 +141,40 @@ Examples:
 
 > Do use using qualifiers, both at the top and for local modules. These end up in the signature of the modules, and can have a knock-on effect on size. Ref: [^GHIssueComment909599749].
 
+> **Asking agda to work too hard:** using lots of _ in equational proofs.
+> Solution: Don't be so lazy, expand out those _.
+> Ref: [^GitHubWikiSpeed].
+
+> **Hard implicits:** when you have a term that has a f  ∘ g (or equivalent) that computes away, the "middle type" might no longer be visible at all in the fully evaluated goal.
+> Solution: Take a look at your goals with all implicits shown and normalize fully. If your implicits are filled with expanded records instead of the name of the thing you had expected Agda to provide, it's because Agda chose to reconstruct it. You should provide those explicitly, to turn the problem into one of checking instead of inference.
+> Ref: [^GitHubWikiSpeed].
+
+> **Large files:** it sure feels like typechecking isn't linear in the size of your file. Conjecture: I think Agda 'peeks' too much when it actually knows the full definition, and doesn't do it as much cross-modules.
+> Solution: Split things up!
+> Ref: [^GitHubWikiSpeed].
+
+> **Large interfaces:** remember that it's not just the fields of a record that are on its interfaces, but all conservative extensions (aka definitions) are too.
+> Solution: Split the helper routines into its own module (and its own file). Some downstream code will use these a lot, some very little. That saves a lot of time for that latter downstream code. If you have to import some huge module, then use using, this cuts things down significantly.
+> Ref: [^GitHubWikiSpeed].
+
+> **Convenience modules:** the lure of just being able to use . is so strong.
+> Solution: These feel like they should be no cost, but that's not true. Agda copies everything (and does some re-checking). This bloats the size of interfaces hugely. agda-categories uses a lot of these "convenience" modules (we didn't realize how expensive they were). It looks like if you make the convenience modules private then it's not as bad, as they don't appear on the interface.
+> Ref: [^GitHubWikiSpeed].
+
+> **Inline proofs:** you know that something's a proof, but Agda doesn't. It's all just values. And Agda is awful at sharing, so it's splay those all over.
+> Solution: Use a lot of where clauses where you name your proofs. Or put them in private blocks above your record. It seems that defining some things via copatterns instead of an explicit record might help too.
+> Ref: [^GitHubWikiSpeed].
+
+> **Lack of sharing:** you know you've typed the same expression over and over, but Agda doesn't.
+> Solution: For long equational proofs, some sub-expressions might take .5 seconds to typecheck -- but they appear 25 times in your proof... Agda doesn't go hash-consing or anything like that. It's quite well-known to do the opposite (let bindings get splayed out, the horror!). Go ahead and give names (and types) to oft repeated intermediate expressions (via where not let, of course).
+> Ref: [^GitHubWikiSpeed].
+
+> It's also good to read [NAD's AIM 32](https://www.cse.chalmers.se/~nad/publications/danielsson-aim32-talk.txt) notes on efficiency and the [Performance Debugging](https://agda.readthedocs.io/en/v2.6.3/tools/performance.html) section of the manual.
+
+
 # References
 
 [^readme]: https://github.com/agda/agda-categories/blob/v0.2.0/README.md
-[^Wiki]: https://github.com/agda/agda-categories/wiki/speed
 [^Hu20]: https://arxiv.org/pdf/2005.07059
 [^Gross14]: https://arxiv.org/pdf/1401.7694
 
@@ -152,4 +182,5 @@ Examples:
 [^GitHubComment905410931]: https://github.com/agda/agda-categories/pull/304#issuecomment-905410931
 [^ZulipTopicEqProofs]: https://agda.zulipchat.com/#narrow/stream/238741-general/topic/*Very*.20long.20checking.20times.20for.20equational.20proofs
 [^GHIssueComment909599749]: https://github.com/agda/agda-categories/issues/308#issuecomment-909599749
+[^GitHubWikiSpeed]: https://github.com/agda/agda-categories/wiki/speed
 
