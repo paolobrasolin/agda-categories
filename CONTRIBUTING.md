@@ -1,8 +1,6 @@
 # Contributing
 
 
-## Design principles
-
 > One of the main reasons that the old library started bit-rotting was that it used *proof-irrelevance* quite extensively. And that this feature started misbehaving in later versions of Agda (it does not seem to be used much in the standard library, so gets less testing). And the desire to see how far one could go in Category Theory while being *proof relevant*. This proof relevance does not have a large effect, at least not until some definitions that use natural transformation-based identities (like that for Monad); here the classical definition is "sloppy", omitting some coherence natural isomorphisms that are expanded away in the proof-irrelevant case, but must be inserted here. Along with proof relevance, it also makes sense to develop under the conditions of *--without-K* and *--safe*.  And to stay away from strict category theory -- being Setoid-enriched doesn't play well with that at all. Ref: [^GithubReadme].
 
 > A second aim is to make this library 'ready' to be, in whole or in part, incorporated into the main standard library. Thus that means removing many custom-made parts written for Setoid-based reasoning from the previous version, amongst others, and instead rely on the standard library as much as possible. Also, the style should be adapted to use that of the standard library. Ref: [^GithubReadme].
@@ -33,6 +31,35 @@
 * [Categories.Category.Monoidal](src/Categories/Category/Monoidal.agda)
 * [Categories.Adjoint.Mate](src/Categories/Adjoint/Mate.agda)
 * agda/agda-categories#5
+
+
+## Design choices
+
+
+### Fitting with modern Agda
+
+
+#### Agda system
+
+* use dependent types
+* be constructive
+
+
+#### Agda ecosystem
+
+* use `agda-stdlib` as much as possible
+* use `agda-stdlib`'s naming conventions whenever meaningful
+
+
+#### Agda modes
+
+* use `--safe`
+* use `--without-K`
+
+
+## Formalization choices
+
+
 
 ## Code conventions
 
@@ -204,7 +231,7 @@ Examples:
 > It's also good to read [NAD's AIM 32](https://www.cse.chalmers.se/~nad/publications/danielsson-aim32-talk.txt) notes on efficiency and the [Performance Debugging](https://agda.readthedocs.io/en/v2.6.3/tools/performance.html) section of the manual.
 
 
-# References
+<!-- References -->
 
 [^GithubReadme]: https://github.com/agda/agda-categories/blob/v0.2.0/README.md
 [^Hu20]: https://arxiv.org/pdf/2005.07059
